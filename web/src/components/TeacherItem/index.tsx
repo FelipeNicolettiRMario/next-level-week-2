@@ -3,33 +3,49 @@ import React from 'react';
 import './styles.css';
 
 import whatsapp from '../../assets/images/icons/whatsapp.svg'
+import api from '../../services/api';
 
+interface TeacherItemProps{
+    teacherItems:{
+        id:number,
+        avatar:string,
+        name:string,
+        whatsapp:string,
+        bio:string,
+        subject:string,
+        cost:number
+    }
+}
 
-function TeacherItem(){
+const TeacherItem:React.FC<TeacherItemProps> = ({teacherItems}) =>{
+    function createNewConnection(){
+        api.post('/connections',{
+            class_id:teacherItems.id
+        })
+    }
+
     return (
         <main>
         <article className="teacher-item">
             <header>
-                <img src="https://pbs.twimg.com/profile_images/1281361907790864386/NMoBABTZ_400x400.jpg" alt="Perfil"/>
+                <img src={teacherItems.avatar} alt="Perfil"/>
                 <div>
-                    <strong>Felipe Nicoletti Reis Mario</strong>
-                    <span>Programação de computadores e pa</span>
+                    <strong>{teacherItems.name}</strong>
+                    <span>{teacherItems.subject}</span>
                 </div>
             </header>
             <p>
-                suahsuahsaushaushuahushsauhasuashaushsauhsausahusahasuhsauas
-                <br/><br/>
-                hauasuhasushasuhsauahsuashasuhsaushauashsa
+                {teacherItems.bio}
             </p>
             <footer>
                 <p>
                     Preço/hora
-                    <strong>R$100,00</strong>
+                    <strong>R${teacherItems.cost}</strong>
                 </p>
-                <button type="button">
+                <a type="button" onClick={createNewConnection} href={`https://wa.me/${teacherItems.whatsapp}`}>
                     <img src={whatsapp} alt="Entrar em contato"/>
                     Entrar em contato
-                </button>
+                </a>
             </footer>
         </article>
     </main>
